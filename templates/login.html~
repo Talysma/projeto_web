@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8"/>
+ <title>login</title>
+ 
+ <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+</head>
+
+<body >
+<div class="titulo">
+<h1> Olá,seja bem-vindo(a)!</h1>
+</div> 
+
+
+<div class="caixalogin">
+
+
+
+
+<div class="imagem">
+<img src="../static/icone/icon.png" >
+
+</div>
+
+<h1 > Faça seu login </h1>
+
+<form action="{{ url_for('login') }}" method="post">
+  
+  <div class="campo">
+  
+  <input  type="text"  name="login" required="" >
+  <label>Login</label>
+  </div>
+  
+  <div class="campo">
+  <input type="password"  name="senha" required="">  
+  <label>Senha</label>
+  </div>
+ <div >
+    <button type="submit">Entrar</button>
+    
+    </div>
+   <p class="paragrafoscentrais" >Não possui uma conta ? <a href="{{url_for('cadastro')}}">Cadastre-se</a> </p>
+    
+</form>
+
+<footer >
+<a  href="https://icons8.com.br/">ícone retirados  do site icons8.com.br</a>
+</footer>
+ 
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8"/>
+ <title> cadastro</title>
+ <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+</head>
+
+<body >
+
+
+<div class="caixacadastrar">
+
+
+
+
+
+
+<h1 > Cadastrar </h1>
+
+<form action="{{ url_for('cadastro_web') }}" method="post">
+  
+  <div class="campo">
+  
+  <input  type="text"  name="nome" required="" >
+  <label>Nome</label>
+  </div>
+  
+  <div class="campo">
+  <input type="text"  name="login" required="">  
+  <label>Login</label>
+  </div>
+  
+  <div class="campo">
+  <input type="password"  name="senha1" required="">  
+  <label>Senha</label>
+  </div>
+  
+   <div class="campo">
+  <input type="password"  name="senha2" required="">  
+  <label>Confirme a senha</label>
+  </div>
+  
+  
+ <div >
+    <button type="submit">Enviar</button>
+    
+    </div>
+    <p class="paragrafoscentrais" >Já possui uma conta ? <a href="{{url_for('login')}}">Logar</a></p>
+    
+    
+  
+</form>  
+
+
+</body>
+</html>

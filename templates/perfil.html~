@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8"/>
+ <title>perfil </title>
+  <link href="../static/icone/fontawesome/css/all.css" rel="stylesheet">
+ <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+</head>
+
+<body >
+    <ul class="menu">
+   <li><a href=""><i class="fas fa-home fa-2x"></i>   início</a></li>
+   <li><a href=""><i class="fas fa-user fa-2x"></i>   perfil </a></li>
+   <li><a href=""><i class="fas fa-comment-alt fa-2x"></i> escrever</a></li>
+   <li><a href="{{url_for('sair')}}"><i class="fas fa-sign-out-alt fa-2x"></i> sair</a></li>
+   
+   
+   
+  </ul>
+
+   
+   <form >
+   <div class="campobusca">
+   <input  type="text"  name="busca" placeholder="Pesquisar"> 
+   <button type="submit"><a  href=""><img src="../static/icone/pesquisa.png" ></a></button>
+   </form>
+   </div>
+   </form>
+   
+  <div class="perfil">
+  <img class="foto" src="{{url_for('perfil_avatar',login=usuario.login)}}">
+  <h2>{{usuario.nome}} </h2>
+  </div>
+  
+  
+  
+  {% if usuario.login == eu %}
+  
+  <div class="botaoedit">
+  <button type="submit"><a href="{{url_for('perfil_edicao')}}">Editar</a></button>
+  </div>
+   
+  {% endif %}
+  
+</body>
+</html>
