@@ -11,7 +11,7 @@
 <body >
    <ul class="menu">
    <li><a href="{{url_for('index')}}"><i class="fas fa-home fa-2x"></i>   início</a></li>
-   <li><a href=""><i class="fas fa-user fa-2x"></i>   perfil </a></li>
+   <li><a href="{{url_for('perfil_web',login=login)}}"><i class="fas fa-user fa-2x"></i>   perfil </a></li>
    <li><a href=""><i class="fas fa-comment-alt fa-2x"></i> escrever</a></li>
    <li><a href="{{url_for('sair_web')}}"><i class="fas fa-sign-out-alt fa-2x"></i> sair</a></li>
    
