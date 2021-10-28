@@ -14,6 +14,8 @@ from classes.cadastro import Cadastro
 from classes.autenticacao import Autenticacao
 from classes.perfil import Perfil
 from classes.sair import Sair
+from classes.foto import Foto
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,7 +24,7 @@ api.add_resource(Cadastro, '/api/cadastro')
 api.add_resource(Autenticacao, '/api/autenticacao/<login>/<senha>')
 api.add_resource(Perfil, '/api/perfil/<login>')
 api.add_resource(Sair, '/api/sair')
-
+api.add_resource(Foto, '/api/foto/<login>')
 
 
 
