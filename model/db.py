@@ -1,4 +1,5 @@
 import sqlite3
+from sqlite3.dbapi2 import IntegrityError
 from flask import g
 
 
@@ -17,6 +18,9 @@ def busca_usuario(login):
     con = get_db()
     return con.execute("SELECT * FROM usuarios WHERE login = ?",[login]).fetchone()
 
+def busca_usuario_id(id_user):
+    con = get_db()
+    return con.execute("SELECT * FROM usuarios WHERE id_user = ?",[id_user]).fetchone()
 
 
 def cadastra_usuario(nome, login, senha):
@@ -55,3 +59,71 @@ def apaga_token(token):
     con = get_db()
     con.execute("DELETE FROM tokens WHERE token = ?",[token])
     con.commit()
+
+
+
+def posta_mensagem(autor , texto):
+    con = get_db()
+    con.execute("INSERT INTO postagens (de , texto) VALUES( ?, ?)",[autor,texto])
+    con.commit()
+
+
+def lista_mensagens(autor):
+    con = get_db()
+    return con.execute("SELECT * FROM postagens WHERE de = ? ORDER BY datahora DESC",[autor]).fetchall()
+
+
+def seguir (seguidor , seguindo):
+    try:
+        con = get_db()
+        con.execute("INSERT INTO seguidores  VALUES(NULl, ?, ?)",[seguidor,seguindo])
+        con.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False    
+
+def desseguir (seguidor , seguindo):
+    con = get_db()
+    con.execute("DELETE FROM seguidores  WHERE id_seguidor = ? AND id_seguindo = ?",[seguidor,seguindo])
+    con.commit()
+
+def esta_seguindo(seguidor, seguindo):
+    con = get_db()
+    return con.execute("SELECT * FROM seguidores  WHERE id_seguidor = ?  AND id_seguindo = ?",[seguidor,seguindo]).fetchone()
+
+
+def lista_seguindo(seguidor):
+     con = get_db()
+     return con.execute("SELECT * FROM seguidores  WHERE id_seguidor = ? ",[seguidor]).fetchall()
+
+
+def curtir(usuario,postagem):
+    try:
+         con = get_db()
+         con.execute("INSERT INTO curtidas  VALUES( NUll,?, ?)",[postagem,usuario])
+         con.commit()
+         return True
+    except sqlite3.IntegrityError:
+        return False 
+
+
+def descurtir(usuario,postagem):
+     con = get_db()
+     con.execute("DELETE FROM curtidas WHERE id_postagem=? AND id_usuario=?",[postagem,usuario]) 
+     con.commit()
+
+def esta_curtindo(usuario,postagem):
+    con = get_db()
+    return con.execute("SELECT * FROM curtidas WHERE id_postagem=? AND id_usuario=?",[postagem,usuario]) .fetchone()
+
+
+
+def pega_postagem(id_postagem):
+    con = get_db()
+    return con.execute("SELECT * FROM postagens WHERE id_post=? ",[id_postagem]) .fetchone()
+
+
+
+def lista_curtidas(id_postagem):
+     con = get_db()
+     return con.execute("SELECT * FROM curtidas  WHERE id_postagem = ? ",[id_postagem]).fetchall()

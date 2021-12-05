@@ -335,7 +335,7 @@ align-items: center;
 top: -65px;
 }
 
-.campobusca img{
+.campobusca i{
 width: 20px;
 }
 
@@ -402,6 +402,20 @@ width: 100%;
  margin-bottom: 40px;
  box-sizing: border-box;
 }
+
+.caixa-itens textarea{
+    width: 100%;
+     padding: 10px;
+     font-size:17px;
+     background: transparent;
+     color:#935696 ;
+     border:none;
+     outline-color: #935696;
+     border-bottom: 1px solid #935696;
+     margin-bottom: 10px;
+    
+    }
+
 .caixa-itens button{
 cursor: pointer;
 background-color:#c8a2c8 ;
@@ -496,11 +510,11 @@ outline: none;
 color: white;
 border: none;
 border-radius: 2px 2px 2px 2px;
-padding: 10px;
-width:100px;
+padding: 8px;
+width:140px;
 text-align: center;
 height: 100%;
-margin-left:130px;
+
 }
 .botaoedit a{
 color: white;
@@ -509,3 +523,42 @@ color: white;
 .botaoedit button:hover{
 background-color:  #7d4a7d;
 }
+
+
+
+
+.mensagem {
+  color: #6f2c73;
+  font-size: 23px;
+  text-align: center;
+  
+
+}
+.container{
+    display: flex;
+    align-items: center;
+   
+}
+.item{
+    margin: 15px;
+}
+
+.icones {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    flex-direction: row;
+
+}
+
+.icones a{
+    margin: 15px;
+    color:  #7d4a7d;
+}
+
+.icones a :hover{
+    color:#c8a2c8 ;
+    
+    }

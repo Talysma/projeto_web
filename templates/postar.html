@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8"/>
+ <title>escrever</title>
+ <link href="../static/icone/fontawesome/css/all.css" rel="stylesheet">
+ <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+ 
+</head>
+
+<body >
+   {% include ('menu.html') %}
+
+   
+  <h2 class="subtitulo">Nova mensagem</h2>
+  
+  
+  <div class="caixa">
+     <div class="caixa-itens">
+        <form action="{{ url_for('postar_web') }}" method="post">
+       <p>Digite sua mensagem<br></p>
+        <textarea  cols="50 " rows="10"   name="texto"></textarea>
+        <button type="submit" >Postar</button>
+       </form>
+    </div>
+  </div>
+ </body>
+</html>
+     

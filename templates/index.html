@@ -6,28 +6,64 @@
  <link href="../static/icone/fontawesome/css/all.css" rel="stylesheet">
  <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
 </head>
-
+<script type="text/javascript">
+  
+  function curtir(elemento,id_postagem){
+    fetch ('/curtir/'+ id_postagem);
+    elemento.innerHTML= '<i class="fas fa-heart fa-2x">';
+    elemento.onclick=function(){
+     descurtir(elemento,id_postagem);
+     return false;
+    }
+  };
+  
+  
+  function descurtir(elemento,id_postagem){
+    fetch ('/descurtir/'+ id_postagem);
+    elemento.innerHTML='<i class="far fa-heart fa-2x">';
+    elemento.onclick=function(){
+     curtir(elemento,id_postagem);
+     return false;
+    }
+  };
+  
+  </script>
 <body >
-   
-   <ul class="menu">
-   <li><a href=""><i class="fas fa-home fa-2x"></i>   início</a></li>
-   <li><a href="{{url_for('perfil_web',login=login)}}"><i class="fas fa-user fa-2x"></i>   perfil </a></li>
-   <li><a href=""><i class="fas fa-comment-alt fa-2x"></i> escrever</a></li>
-   <li><a href="{{url_for('sair_web')}}"><i class="fas fa-sign-out-alt fa-2x"></i> sair</a></li>
-   
-   
-   
-  </ul>
+  {% include ('menu.html') %}
 
-   
-   
-   <form >
-   <div class="campobusca">
-   <input  type="text"  name="busca" placeholder="Pesquisar"> 
-   <button type="submit"><a  href=""><img src="../static/icone/pesquisa.png" ></a></button>
-   </form>
-   </div>
-   </form>
-   
+
+   <br>
+  <br>
+<h2 class="subtitulo">Postagens</h2>
+
+{% for postagem in postagens %}
+<div class="caixa-itens">
+   <div class="container">
+      <div class="item">
+    <img  class="foto" src="{{url_for('perfil_avatar',login=postagem.autor_login)}}">
+</div>
+<div class="item">
+   <p>
+    <a  href="{{url_for ('perfil_web',login=postagem.autor_login)}}">{{ postagem.autor}}</a> escreveu às {{ postagem.datahora}}<br></p>
+</div>
+</div>
+    <div class="mensagem">{{ postagem.texto}}</div>
+    <div class="icones">
+
+      {% if postagem["curtiu"] == True %}
+
+      <a   href="#" onclick="descurtir(this,{{postagem.id_post}}); return false;"><i class="fas fa-heart fa-2x"></i></a>
+      {% else %}
+  
+      <a   href="#"onclick="curtir(this,{{postagem.id_post}}); return false;"> <i class="far fa-heart fa-2x"></i></a>
+  
+      {% endif %}
+    
+      <a   href=""><i class="far fa-comment-alt fa-2x "></i></a>
+    </div>
+</div>
+{% endfor %}
+  
+</div>
  
 </body>

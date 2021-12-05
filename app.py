@@ -3,7 +3,9 @@
 
 
 from flask import Flask, redirect, url_for, session,request,render_template,jsonify
+from flask.scaffold import F
 from flask_restful import Api
+from classes.contato import Contato
 from model import db
 import os
 import secrets
@@ -15,6 +17,15 @@ from classes.autenticacao import Autenticacao
 from classes.perfil import Perfil
 from classes.sair import Sair
 from classes.foto import Foto
+from classes.postagem import Postagem
+from classes.postagens import Postagens
+from classes.contato import Contato
+from classes.contatos import Contatos
+from classes.feed import Feed
+from classes.curtida import Curtida
+from classes.curtidas import Curtidas
+
+
 
 
 app = Flask(__name__)
@@ -25,7 +36,13 @@ api.add_resource(Autenticacao, '/api/autenticacao/<login>/<senha>')
 api.add_resource(Perfil, '/api/perfil/<login>')
 api.add_resource(Sair, '/api/sair')
 api.add_resource(Foto, '/api/foto/<login>')
-
+api.add_resource(Postagem,'/api/postagem')
+api.add_resource(Postagens,'/api/postagens/<login>')
+api.add_resource(Contato  ,'/api/contato/<login>')
+api.add_resource(Contatos  ,'/api/contatos')
+api.add_resource(Feed  ,'/api/feed')
+api.add_resource(Curtida ,'/api/curtida/<id_postagem>')
+api.add_resource(Curtidas ,'/api/curtidas/<id_postagem>')
 
 
 app.secret_key = b'kljHI@gilds][s-39SIHD;.,&s'
@@ -40,21 +57,27 @@ def arquivo_permitido(filename):
 
 @app.route("/")
 def index():
-    if "usuario" in session: 
-        return render_template("index.html", login = session['usuario'])
+    if "usuario" in session:
+        lista=Feed.pega_postagens(session['id_user']) 
+
+        for i in range (len(lista)):
+            resultado = db.esta_curtindo(session['id_user'],lista[i]["id_post"])
+            if resultado == None:
+                lista[i]["curtiu"] = False
+            else:
+                lista[i]["curtiu"] = True
+
+            
+  
+        
+        return render_template("index.html", login = session['usuario'],eu=session['usuario'],postagens=lista)
+    
+       
+        
     else:
         return render_template("login.html")
 
-@app.route("/autenticacao/<login>/<senha>")
-def autenticacao_web(login, senha):
-    usuario = db.busca_usuario(login)
 
-    if sha256_crypt.verify(senha, usuario["senha"]):
-        session["usuario"] = login
-        session["nome"] = usuario["nome"]
-        return redirect(url_for("index"))
-    else:
-        return f"Erro de autenticação."
 
 @app.route("/sair") 
 def sair_web():
@@ -95,6 +118,7 @@ def login():
             if sha256_crypt.verify(request.form["senha"],usuario["senha"]):
                 session["usuario"] = request.form["login"]
                 session["nome"]  = usuario["nome"]  
+                session["id_user"] = usuario["id_user"]
                 return redirect (url_for("index"))
 
             else:                                   
@@ -109,7 +133,38 @@ def perfil_web(login):
     if usuario == None:
         return render_template("perfilnencontrado.html")
     else:
-        return render_template("perfil.html", usuario=usuario, eu=session["usuario"])
+        postagens=db.lista_mensagens(usuario['id_user'])
+        
+
+        resultado=db.esta_seguindo(session['id_user'],usuario['id_user'])
+        if resultado==None:
+            seguindo=False
+
+        else:
+            seguindo=True
+
+        lista=[]
+        for postagem in postagens:
+            item={
+                "id_post":postagem["id_post"],
+                "datahora":postagem["datahora"],
+                "texto":postagem["texto"]
+                }
+
+            resultado = db.esta_curtindo(session['id_user'],postagem["id_post"])
+            if resultado == None:
+                item["curtiu"] = False
+            else:
+                item["curtiu"] = True
+            lista.append(item)
+
+
+
+
+
+
+
+        return render_template("perfil.html", usuario=usuario, eu=session["usuario"],postagens=lista,login=session["usuario"],seguindo=seguindo)
 
 
 
@@ -153,6 +208,63 @@ def perfil_foto():
         return redirect(url_for('index'))
     else:
         return render_template ("arquivoinvalido.html")
+
+@app.route("/postar", methods=["GET", "POST"])
+def postar_web():
+    if request.method == "GET":
+        return render_template ('postar.html',login=session["usuario"])
+    else:
+        try:
+            texto = request.form['texto']
+            if texto == '':
+                return  'Não pode texto em branco.'
+            db.posta_mensagem(session['id_user'],texto)
+            return index()
+                              
+        except KeyError:
+            return 'Falta informar o texto.'
+
+
+@app.route("/seguir/<login>")
+def web_seguir(login):
+    perfil = db.busca_usuario(login)
+    if perfil==None:
+        return  f'Usuário {login} não existe.'
+
+    db.seguir(session['id_user'] ,perfil['id_user'])
+    return redirect(url_for("perfil_web",login=login))
+
+@app.route("/desseguir/<login>")
+def web_desseguir(login):
+    perfil = db.busca_usuario(login)
+    if perfil==None:
+        return  f'Usuário {login} não existe.'
+
+    db.desseguir(session['id_user'] ,perfil['id_user'])
+    return redirect(url_for("perfil_web",login=login))
+
+
+
+@app.route("/curtir/<id_postagem>")
+def web_curtir(id_postagem):
+    postagem=db.pega_postagem(id_postagem)
+    if postagem==None:
+        return 'Postagem não existe.'
+
+    resultado = db.curtir(session['id_user'] ,id_postagem)
+    return redirect(url_for("index"))
+
+
+@app.route("/descurtir/<id_postagem>")
+def web_descurtir(id_postagem):
+    postagem=db.pega_postagem(id_postagem)
+    if postagem==None:
+        return 'Postagem não existe.'
+
+    resultado = db.descurtir(session['id_user'] ,id_postagem)
+    return redirect(url_for("index"))
+
+
 
 @app.errorhandler(413)
 def request_entity_too_large(error):

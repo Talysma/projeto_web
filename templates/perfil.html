@@ -5,28 +5,36 @@
  <title>perfil </title>
   <link href="../static/icone/fontawesome/css/all.css" rel="stylesheet">
  <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+<script type="text/javascript">
+  
+function curtir(elemento,id_postagem){
+  fetch ('/curtir/'+ id_postagem);
+  elemento.innerHTML= '<i class="fas fa-heart fa-2x">';
+  elemento.onclick=function(){
+   descurtir(elemento,id_postagem);
+   return false;
+  }
+};
+
+
+function descurtir(elemento,id_postagem){
+  fetch ('/descurtir/'+ id_postagem);
+  elemento.innerHTML='<i class="far fa-heart fa-2x">';
+  elemento.onclick=function(){
+   curtir(elemento,id_postagem);
+   return false;
+  }
+};
+
+</script>
+
+
 </head>
 
 <body >
-    <ul class="menu">
-   <li><a href="{{url_for('index')}}"><i class="fas fa-home fa-2x"></i>   início</a></li>
-   <li><a href=""><i class="fas fa-user fa-2x"></i>   perfil </a></li>
-   <li><a href=""><i class="fas fa-comment-alt fa-2x"></i> escrever</a></li>
-   <li><a href="{{url_for('sair_web')}}"><i class="fas fa-sign-out-alt fa-2x"></i> sair</a></li>
-   
-   
-   
-  </ul>
 
-   
-   <form >
-   <div class="campobusca">
-   <input  type="text"  name="busca" placeholder="Pesquisar"> 
-   <button type="submit"><a  href=""><img src="../static/icone/pesquisa.png" ></a></button>
-   </form>
-   </div>
-   </form>
-   
+  {% include ('menu.html') %}
+    
   <div class="perfil">
   <img class="foto" src="{{url_for('perfil_avatar',login=usuario.login)}}">
   <h2>{{usuario.nome}} </h2>
@@ -34,13 +42,51 @@
   
   
   
-  {% if usuario.login == eu %}
+{% if usuario.login == eu %}
   
   <div class="botaoedit">
   <button type="submit"><a href="{{url_for('perfil_edicao')}}">Editar</a></button>
+  {% endif %}
+</div>
+{% if usuario.login != eu %}
+<div class="botaoedit">
+  {% if seguindo == True %}
+  <button type="submit"><a href="{{url_for('web_desseguir',login=usuario.login)}}">Deixar de seguir</a></button>
+  {% else %}
+  <button type="submit"><a href="{{url_for('web_seguir',login=usuario.login)}}">Seguir</a></button>
+  {% endif %}
+{% endif %}
   </div>
    
-  {% endif %}
   
+  <br>
+  <br>
+<h2 class="subtitulo">Postagens</h2>
+
+{% for postagem in postagens %}
+<div class="caixa-itens">
+<p >
+  {{ postagem.datahora}}<br></p>
+<div class="mensagem">{{ postagem.texto}}</div>
+<br>
+
+<div class="icones">
+
+      {% if postagem["curtiu"] == True %}
+
+      <a   href="#" onclick="descurtir(this, {{postagem.id_post}}); return false;"><i class="fas fa-heart fa-2x"></i></a>
+      {% else %}
+  
+      <a   href="#"onclick="curtir(this,{{postagem.id_post}}); return false;"> <i class="far fa-heart fa-2x"></i></a>
+  
+      {% endif %}
+    
+      <a   href=""><i class="far fa-comment-alt fa-2x "></i></a>
+    </div>
+</div>
+{% endfor %}
+  
+</div>
+
 </body>
 </html>
