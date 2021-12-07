@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8"/>
+ <title>index</title>
+ <link href="../static/icone/fontawesome/css/all.css" rel="stylesheet">
+ <link rel="stylesheet" href="../static/css/estilo.css" type="text/css">
+</head>
+
+  
+ 
+<body >
+  {% include ('menu.html') %}
+  <br>
+  <br>
+
+
+
+  <h2 class="subtitulo">Usuários</h2>
+
+  {% for usuario in usuarios %}
+  <div class="caixa-itens">
+     <div class="container">
+        <div class="item">
+      <img  class="foto" src="{{url_for('perfil_avatar',login=usuario.login)}}">
+  </div>
+  <div class="item">
+    <p>
+     <a  href="{{url_for ('perfil_web',login=usuario.login)}}"></a><strong>{{usuario.login}}</strong></a></p>
+     {% endfor %}  
+ </div>
+</div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+  <h2 class="subtitulo">Postagens</h2>
+
+  {% for postagem in postagens %}
+  <div class="caixa-itens">
+     <div class="container">
+        <div class="item">
+      <img  class="foto" src="{{url_for('perfil_avatar',login=postagem.autor_login)}}">
+  </div>
+  <div class="item">
+     <p>
+      <a  href="{{url_for ('perfil_web',login=postagem.autor_login)}}">{{ postagem.autor}}</a> escreveu às {{ postagem.datahora}}<br></p>
+  </div>
+  </div>
+      <div class="mensagem">{{ postagem.texto}}</div>
+      <div class="icones">
+  
+      </div>
+  </div>
+  {% endfor %}
+    
+</div>
+</div>
+</div>
+
+</body>

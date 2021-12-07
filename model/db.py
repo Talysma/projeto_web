@@ -127,3 +127,17 @@ def pega_postagem(id_postagem):
 def lista_curtidas(id_postagem):
      con = get_db()
      return con.execute("SELECT * FROM curtidas  WHERE id_postagem = ? ",[id_postagem]).fetchall()
+
+def busca_mensagens(termo):
+     con = get_db()
+     return con.execute("SELECT * FROM postagens  WHERE texto LIKE ? ",[f'%{termo}%']).fetchall()
+
+
+def busca_usuarios(termo):
+     con = get_db()
+     return con.execute("SELECT * FROM usuarios  WHERE login LIKE ? OR nome LIKE ?",[f'%{termo}%',f'%{termo}%']).fetchall()
+
+
+
+
+

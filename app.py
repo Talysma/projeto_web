@@ -24,6 +24,7 @@ from classes.contatos import Contatos
 from classes.feed import Feed
 from classes.curtida import Curtida
 from classes.curtidas import Curtidas
+from classes.busca import Busca
 
 
 
@@ -43,6 +44,8 @@ api.add_resource(Contatos  ,'/api/contatos')
 api.add_resource(Feed  ,'/api/feed')
 api.add_resource(Curtida ,'/api/curtida/<id_postagem>')
 api.add_resource(Curtidas ,'/api/curtidas/<id_postagem>')
+api.add_resource(Busca ,'/api/busca/<termo>')
+
 
 
 app.secret_key = b'kljHI@gilds][s-39SIHD;.,&s'
@@ -217,12 +220,12 @@ def postar_web():
         try:
             texto = request.form['texto']
             if texto == '':
-                return  'Não pode texto em branco.'
+                return  render_template ('falta_texto.html')
             db.posta_mensagem(session['id_user'],texto)
             return index()
                               
         except KeyError:
-            return 'Falta informar o texto.'
+            return render_template ('erro.html')
 
 
 @app.route("/seguir/<login>")
@@ -263,6 +266,44 @@ def web_descurtir(id_postagem):
 
     resultado = db.descurtir(session['id_user'] ,id_postagem)
     return redirect(url_for("index"))
+
+
+@app.route("/buscar",methods=["GET", "POST"])
+def buscar_web():
+    if request.method == "GET":
+        return render_template ('busca.html')
+    else:
+        termo=request.form['termo']
+        postagens=db.busca_mensagens(termo)
+       
+        lista_postagens = []
+
+        for postagem in postagens:
+            autor=db.busca_usuario_id(postagem['de'])
+            item={
+            'id_post':postagem['id_post'],
+            'autor_login':autor['login'],
+            'autor':autor['nome'],
+            'datahora':postagem['datahora'],
+            'texto':postagem['texto']
+            }
+            lista_postagens .append(item)
+
+        usuarios=db.busca_usuarios(termo)
+       
+        lista_usuarios = []
+
+        for user in usuarios:
+            
+            item={
+            'id_user':user['id_user'],
+            'login':user['login'],
+            'nome':user['nome'],
+            
+            }
+            lista_usuarios.append(item)
+
+        return render_template ('busca.html',usuarios=lista_usuarios,postagens=lista_postagens,login=session["usuario"])
 
 
 

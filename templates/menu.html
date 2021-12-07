@@ -3,17 +3,19 @@
     <li><a href="{{url_for('perfil_web',login=login)}}"><i class="fas fa-user fa-2x"></i>   perfil </a></li>
     <li><a href="{{url_for('postar_web')}}"><i class="fas fa-comment-alt fa-2x"></i> escrever</a></li>
     <li><a href="{{url_for('sair_web')}}"><i class="fas fa-sign-out-alt fa-2x"></i> sair</a></li>
-    
-    
+   
     
    </ul>
  
-    
-    <form >
-    <div class="campobusca">
-    <input  type="text"  name="busca" placeholder="Pesquisar"> 
-    <button type="submit"><a  href=""><i class="far fa-search fa-5x"></i></a></button>
+   
+  <form action="{{ url_for('buscar_web') }}" method="post">
+    <div class="campobusca"><input  type="text"  name="termo" placeholder="Pesquisar"> 
+    <button type="submit"><img src="../static/icone/pesquisa.png" ></button>
     </form>
     </div>
     </form>
+
+    <br>
+    <br>
+
     
