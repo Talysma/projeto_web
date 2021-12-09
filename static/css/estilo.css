@@ -541,6 +541,7 @@ background-color:  #7d4a7d;
 }
 .item{
     margin: 15px;
+
 }
 
 .icones {
@@ -562,3 +563,8 @@ background-color:  #7d4a7d;
     color:#c8a2c8 ;
     
     }
+
+.item a{
+    font-size: 22px; 
+   
+}   

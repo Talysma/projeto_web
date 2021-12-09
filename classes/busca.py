@@ -27,6 +27,8 @@ class Busca (Resource):
             'datahora':postagem['datahora'],
             'texto':postagem['texto']
             }
+
+           
             lista_postagens .append(item)
 
         usuarios=db.busca_usuarios(termo)

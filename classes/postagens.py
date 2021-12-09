@@ -3,7 +3,7 @@ from flask_restful import Resource
 from model import db
 from classes.token import Token
 from passlib.hash import sha256_crypt
-
+from datetime import datetime
 
 
 class Postagens (Resource):

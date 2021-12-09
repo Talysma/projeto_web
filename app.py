@@ -218,7 +218,10 @@ def postar_web():
         return render_template ('postar.html',login=session["usuario"])
     else:
         try:
+            
             texto = request.form['texto']
+           
+            
             if texto == '':
                 return  render_template ('falta_texto.html')
             db.posta_mensagem(session['id_user'],texto)

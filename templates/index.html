@@ -44,7 +44,7 @@
 </div>
 <div class="item">
    <p>
-    <a  href="{{url_for ('perfil_web',login=postagem.autor_login)}}">{{ postagem.autor}}</a> escreveu às {{ postagem.datahora}}<br></p>
+    <a  href="{{url_for ('perfil_web',login=postagem.autor_login)}}">{{ postagem.autor}}</a> escreveu em {{ postagem.datahora}}<br></p>
 </div>
 </div>
     <div class="mensagem">{{ postagem.texto}}</div>
@@ -59,7 +59,7 @@
   
       {% endif %}
     
-      <a   href=""><i class="far fa-comment-alt fa-2x "></i></a>
+    
     </div>
 </div>
 {% endfor %}
