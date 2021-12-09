@@ -567,4 +567,14 @@ background-color:  #7d4a7d;
 .item a{
     font-size: 22px; 
    
-}   
+}
+
+footer {
+    margin: auto;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    text-align: center;
+    color: #6f2c73;
+    font-size: 18px;
+}

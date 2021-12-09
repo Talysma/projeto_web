@@ -34,7 +34,8 @@ function descurtir(elemento,id_postagem){
 <body >
 
   {% include ('menu.html') %}
-    
+  
+ 
   <div class="perfil">
   <img class="foto" src="{{url_for('perfil_avatar',login=usuario.login)}}">
   <h2>{{usuario.nome}} </h2>
@@ -87,6 +88,9 @@ function descurtir(elemento,id_postagem){
 {% endfor %}
   
 </div>
+<div>
 
+</div>
+<footer ><a href="https://icons8.com.br/">ícones retirados  do site icons8.com.br</a>
 </body>
 </html>
